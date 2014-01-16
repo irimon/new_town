@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<div class="row-fluid span12">
+	<% if user_signed_in? %>
+ 	   Signed in as <%= current_user.email %>. Not you?
+ 	   <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+ 	   <% if current_user.name? == false %>
+ 	   <br>
+ 	   	    Would you like to update your profile?  
+ 	   	    This will allow the system to customize to your preferences 
+ 	   	    <%= link_to "Start Here", users_update_path, class: "btn btn-small btn-primary" %>
+ 	   <% end %>
+ 	 <% else %>
+ 	   <%= link_to "sign in", new_user_registration_path, class: "btn btn-small btn-primary" %> or <%= link_to "sign in", new_user_session_path %>
+ 	 <% end %>
+
+
+	<!-- <div class="span3">
+	   <button type="submit" href="#" class="btn btn-primary">Start Here</button>
+	</div> -->
+	
+</div>
+
