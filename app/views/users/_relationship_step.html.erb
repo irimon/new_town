@@ -1,0 +1,21 @@
+  <p>
+   <%= f.label :Relationship %>
+  <%= f.select :relationship, ['Married','Single','In a relationship', 'It is complicated'] %>
+  </p>
+  <div id="ask_relationship">Would you like the system to tell you about singles who might interest you? <%= f.select :sex, ['Yes', 'No'] %> </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script>
+		(function() {
+		    $('#ask_relationship').hide(); 
+			$("#user_relationship").change(function() {
+				var cur = $("#user_relationship").val();
+				console.log(cur);			
+				if (cur == 'Single') {
+					$('#ask_relationship').show(); 
+				} else {
+					$('#ask_relationship').hide(); 
+				};	
+			});	
+		})();	
+		</script>
