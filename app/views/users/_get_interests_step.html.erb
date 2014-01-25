@@ -6,7 +6,7 @@
  
 <!-- Build your select: -->
 
-<% if @user.user_interests == nil %>
+<% if @user.user_interests.first == nil %>
 	<h3> Choose fields of interest </h3>
 	<%= fields_for(UserInterest.all.build) do |cc| %>
  	   <%= cc.label "All Interests" %>

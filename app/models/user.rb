@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   workflow do
     state :base do
       event :next, :transitions_to => :relationship
+      event :prev, :transitions_to => :base
     end
      state :relationship do
       event :next, :transitions_to => :get_interests
