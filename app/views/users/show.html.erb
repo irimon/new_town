@@ -3,5 +3,7 @@
   age: <%= @user.age %><br>
   sex: <%= @user.sex %><br>
   Relationship status: <%= @user.relationship %><br>
-  interests: <%= @user.interests %>
+  interests: <% @user.user_interests.each do |int| %>
+  			  <%= Interest.find_by_id(int.interest_id).name %>
+  			  <% end %>	
 	

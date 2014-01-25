@@ -1,5 +1,72 @@
-<h2>Basic data</h2>
-  <p>
-    <%= f.label :interesets %><br />
-    <%= f.text_field :interests %>
-  </p>
+<!-- Include Twitter Bootstrap and jQuery: -->
+
+<!-- Include the plugin's CSS and JS: 
+ <script type="text/javascript" src="../assets/js/bootstrap-multiselect.js"></script>
+ -->
+ 
+<!-- Build your select: -->
+
+<% if @user.user_interests == nil %>
+	<h3> Choose fields of interest </h3>
+	<%= fields_for(UserInterest.all.build) do |cc| %>
+ 	   <%= cc.label "All Interests" %>
+  	   <%= collection_select(:interests, :id, Interest.all, :id, :name, {}, { :multiple => true }) %>
+     <% end %>
+<% else %>
+	<h3> You currantly selected the following interests </h3>
+	<% @user.user_interests.each do |int| %>
+  		<%= Interest.find_by_id(int.interest_id).name %>
+  	<% end %>
+    <h3> Would you like to edit your selection ? </h3>
+    <button id="edit_selection">Yes</button>
+	<div id="selections">
+		<%= fields_for(UserInterest.all.build) do |cc| %>
+ 		   <%= cc.label "All Interests" %>
+  	 	  <%= collection_select(:interests, :id, Interest.all, :id, :name, {}, { :multiple => true }) %>
+        <% end %>
+    </div>
+<% end %>
+ <!--<select class="multiselect" multiple="multiple" id="user_interests" name="user[interests]" >
+	<option value="cheese">Cheese</option>
+	<option value="tomatoes">Tomatoes</option>
+	<option value="mozarella">Mozzarella</option>
+	<option value="mushrooms">Mushrooms</option>
+	<option value="pepperoni">Pepperoni</option>
+	<option value="onions">Onions</option>
+</select> -->
+ 
+<!-- Initialize the plugin: -->
+<script>
+$().ready(function(){
+	$('#selections').hide();
+	$('#edit_selection').click(function() {
+		$('#selections').show();
+	});
+});
+/*$(document).ready(function() {
+	$('.multiselect').multiselect({
+		buttonText: function(options, select) {
+			if (options.length == 0) {
+				return this.nonSelectedText + ' <b class="caret"></b>';
+			}
+			else {
+				if (options.length > this.numberDisplayed) {
+					return options.length + ' ' + this.nSelectedText + ' <b class="caret"></b>';
+				}
+				else {
+					var selected = '';
+					options.each(function() {
+						var label = ($(this).attr('label') !== undefined) ? $(this).attr('label') : $(this).html();
+						 
+						selected += label + ', ';
+					});
+					return selected.substr(0, selected.length - 2) + ' <b class="caret"></b>';
+				}
+			}
+		}
+	);
+});}*/
+</script>
+
+
+

@@ -6,6 +6,10 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
  #attr_accessible :age, :email, :interests, :kids, :name, :relationship, :sex
+  has_many :user_interests, dependent: :destroy
+  has_many :interests, :through =>  :user_interests
+
+  accepts_nested_attributes_for :interests, allow_destroy: true
 
  include Workflow
   workflow do
@@ -23,6 +27,7 @@ class User < ActiveRecord::Base
 
     state :end do
     	  event :prev, :transitions_to => :get_interests
+    	  event :next, :transitions_to => :base
     end
     #state :being_reviewed do
     #  event :accept, :transitions_to => :accepted
@@ -34,5 +39,13 @@ class User < ActiveRecord::Base
 
   def set_default_state 
   	current_state = base
+  end
+
+  def add_interest(interest_id)
+  	if interest_id.to_i > 0
+  		if !user_interests.find_by_interest_id(interest_id)
+  			user_interests.create!(interest_id: interest_id)
+  		end
+  	end
   end
 end
