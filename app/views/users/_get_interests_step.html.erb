@@ -7,11 +7,24 @@
 <!-- Build your select: -->
 
 <% if @user.user_interests.first == nil %>
+  <div id="Interest_selection">
 	<h3> Choose fields of interest </h3>
 	<%= fields_for(UserInterest.all.build) do |cc| %>
  	   <%= cc.label "All Interests" %>
-  	   <%= collection_select(:interests, :id, Interest.all, :id, :name, {}, { :multiple => true }) %>
+ 	   <table>
+ 	   	<tbody>
+	 	   <tr>
+	  	   	  <td class="interests_list"><%= collection_check_boxes(:interests, :id, Interest.all, :id, :name, {}, { :multiple => true }) %></td>	
+	  	  	  <td class="follow_up_q"><%= collection_check_boxes(:interests, :follow_up_question, Interest.all, :id, :follow_up_question, {}, { :multiple => true }) %></td>	
+	  	  	</tr>
+	  	 </tbody>
+  	  </table>
+
      <% end %>
+ </div>
+
+
+
 <% else %>
 	<h3> You currantly selected the following interests </h3>
 	<% @user.user_interests.each do |int| %>
@@ -26,46 +39,47 @@
         <% end %>
     </div>
 <% end %>
- <!--<select class="multiselect" multiple="multiple" id="user_interests" name="user[interests]" >
-	<option value="cheese">Cheese</option>
-	<option value="tomatoes">Tomatoes</option>
-	<option value="mozarella">Mozzarella</option>
-	<option value="mushrooms">Mushrooms</option>
-	<option value="pepperoni">Pepperoni</option>
-	<option value="onions">Onions</option>
-</select> -->
- 
+  
 <!-- Initialize the plugin: -->
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 <script>
-$().ready(function(){
+$(document).ready(function () {
+	$( ".follow_up_q input" ).each(function( index ) {
+		$( this ).hide()
+	});
+	$( ".follow_up_q label" ).each(function( index ) {
+		$( this ).hide()
+	});
+
+	$( ".interests_list input" ).each(function( index ) {
+		var myId = "#interests_follow_up_question_" + index;
+		var myLabel = "label[for='interests_follow_up_question_" + index + "']";
+
+		$(this).click(function() {
+			console.log($(this).val());
+			console.log("myID = " + "#interests_follow_up_question_" + $(this).val() + " myLabel = " + "label[for='interests_follow_up_question_" + $(this).val() + "']");
+			if ($(this).is(':checked')) {
+				console.log("Checked");
+								$("#interests_follow_up_question_" + $(this).val()).show();
+
+				$("label[for='interests_follow_up_question_" + $(this).val() + "']").show();
+			} else {
+				console.log("unChecked");
+				$("#interests_follow_up_question_" + $(this).val()).hide();
+				$("label[for='interests_follow_up_question_" + $(this).val() + "']").hide();
+			}
+		});	
+	});
+	
+	
+	
 	$('#selections').hide();
 	$('#edit_selection').click(function() {
 		$('#selections').show();
 	});
 });
-/*$(document).ready(function() {
-	$('.multiselect').multiselect({
-		buttonText: function(options, select) {
-			if (options.length == 0) {
-				return this.nonSelectedText + ' <b class="caret"></b>';
-			}
-			else {
-				if (options.length > this.numberDisplayed) {
-					return options.length + ' ' + this.nSelectedText + ' <b class="caret"></b>';
-				}
-				else {
-					var selected = '';
-					options.each(function() {
-						var label = ($(this).attr('label') !== undefined) ? $(this).attr('label') : $(this).html();
-						 
-						selected += label + ', ';
-					});
-					return selected.substr(0, selected.length - 2) + ' <b class="caret"></b>';
-				}
-			}
-		}
-	);
-});}*/
+
 </script>
 
 

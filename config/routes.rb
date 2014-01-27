@@ -1,5 +1,7 @@
 NewTown::Application.routes.draw do
   get "users/update"
+  get "users/suggestions"
+
   devise_for :users
   get "static_pages/home"
   get "static_pages/about"

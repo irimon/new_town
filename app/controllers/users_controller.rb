@@ -10,12 +10,14 @@ class UsersController < ApplicationController
   	
   	@user = current_user
   	if current_user.current_state == "get_interests" 
-  		#if @user.interests
-  		#	@user.interests.update(params[:interests])
-  		#else 
-  		if (params[:interests])
+   		if (params[:interests])
+  			puts params[:interests][:follow_up_question]
   	   		 params[:interests][:id].each do |int|
-  		  		  @user.add_interest(int)
+  	   		 	  if params[:interests][:follow_up_question].include?(int) 
+  		  			  @user.add_interest(int,'yes')
+  		  		   else
+					   @user.add_interest(int,'no')
+  		  		   end
   		    	#puts params[:interests][:id]  	
   			end	
   		end
@@ -55,4 +57,17 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:name, :relationship, :age, :sex, :interests_attributes => [:id, :name, :_destroy])
   end
+
+
+  def suggestions
+  	current_user.user_interests.each do |int|
+  		if int.follow_up_answer == 'yes'
+  			@interest = Interest.find_by_id(int.interest_id).name
+  			@users = Interest.find_by_id(int.interest_id).users # FIXME - only show willing users
+  		end
+  	end
+
+  end
+
+
 end

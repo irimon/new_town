@@ -42,10 +42,10 @@ class User < ActiveRecord::Base
   	current_state = base
   end
 
-  def add_interest(interest_id)
+  def add_interest(interest_id, answer)
   	if interest_id.to_i > 0
   		if !user_interests.find_by_interest_id(interest_id)
-  			user_interests.create!(interest_id: interest_id)
+  			user_interests.create!(interest_id: interest_id, follow_up_answer: answer)
   		end
   	end
   end

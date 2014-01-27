@@ -5,5 +5,7 @@
   Relationship status: <%= @user.relationship %><br>
   interests: <% @user.user_interests.each do |int| %>
   			  <%= Interest.find_by_id(int.interest_id).name %>
+  			  <%= Interest.find_by_id(int.interest_id).follow_up_question %>
+  			  <%= int.follow_up_answer %> <br>
   			  <% end %>	
 	
