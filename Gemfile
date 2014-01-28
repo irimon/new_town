@@ -49,6 +49,7 @@ gem 'therubyracer'
 
 gem "fuelux-rails"
 
+#gem 'eventfulapi'
 #gem 'bootstrap-multiselect-rails'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
