@@ -8,7 +8,9 @@ NewTown::Application.routes.draw do
 
   root to: 'static_pages#home'
   resources :users
+  resources :kids 
 
+  get 'users/suggestions'
   #match '/users/:id', :to => 'users#show', :as => :user
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

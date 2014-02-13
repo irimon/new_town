@@ -1,0 +1,1 @@
+MEETUP_CONFIG = YAML.load_file("#{::Rails.root}/config/meetup.yml")[::Rails.env]

@@ -1,0 +1,34 @@
+<!-- Include Twitter Bootstrap and jQuery: -->
+
+<!-- Include the plugin's CSS and JS: 
+ <script type="text/javascript" src="../assets/js/bootstrap-multiselect.js"></script>
+ -->
+ 
+<!-- Build your select: -->
+
+	<h3> Have kids? </h3>
+	<div class="kids_container">
+		<%= fields_for(Kid.all.build) do |cc| %>
+	 	   <%= cc.label "Kid's Sex" %>
+	 	   <%= cc.select(:sex, ['Male','Female']) %>
+	 	   <%= cc.label "Kid's Age" %>
+	  	   <%= cc.number_field(:age)  %>
+	  	   <%= cc.label "Kid's Name" %>
+	  	   <%= cc.text_field(:name)  %>
+	  	   <%= cc.submit "Add", class: "btn" %>
+	    <% end %>
+    </div>
+
+ 
+<script>
+$().ready(function(){
+	$('#selections').hide();
+	$('#edit_selection').click(function() {
+		$('#selections').show();
+	});
+});
+
+</script>
+
+
+

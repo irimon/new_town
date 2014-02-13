@@ -1,18 +1,38 @@
-<h1>Possible partents that are interested in <%= @interest %></h1>
-  <table class="table table-striped table-condensed">
+
+<h1>Possible PlayDate suggestions </h1>
+ 
+<% current_user.kids.each do |kid|  %>
+	Suggested playdates for <%= kid.name %>
+	<table class="table table-striped table-condensed">
 	<thead>
-	 <tr>
-	   <th>Age</th>
-	   <th>Sex</th>
-	 </tr>
-	</thead>   
-    <tbody>
-	  <% for usr in @users %>
+		<tr>
+			<th>Age</th>
+			<th>Sex</th>
+			<th>Kid's Parent Details</th>
+		</tr>
+	</thead>
+
+	<tbody>
+	<% @kids = Kid.where(age: kid.age,sex: kid.sex) %>
+	<% @kids.each do |other_kid|  %>
+		<% if other_kid.id != kid.id %>
 		 <tr>
-			<td><%= usr.age %></td>
-            <td><%= usr.sex %></td>
-         </tr>
-      <% end %>
-     </tbody>
-  </table>
-  
+		 	<td><%= other_kid.age %></td>
+		 	<td><%= other_kid.sex %></td>
+		 	<td><%= link_to other_kid.user_id, user_path(other_kid.user_id) %></td>
+		 </tr>
+		<% end %>
+	  <% end %>
+	</tbody>
+	</table>	
+<% end %>
+<h2>Suggested events</h2>
+	<% @events.each do |ev| %>
+		<%= ev.name %>
+	<% end %>
+		<%= @key %>
+
+<% (0...@meetup_names.length).each do |i|  %>
+  <a href=<%= @meetup_urls[i] %> > <%= @meetup_names[i] %> </a>
+  <br>
+<% end %>

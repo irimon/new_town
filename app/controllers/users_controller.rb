@@ -13,7 +13,8 @@ class UsersController < ApplicationController
    		if (params[:interests])
   			puts params[:interests][:follow_up_question]
   	   		 params[:interests][:id].each do |int|
-  	   		 	  if params[:interests][:follow_up_question].include?(int) 
+
+  	   		 	  if !params[:interests][:follow_up_question].nil? and params[:interests][:follow_up_question].include?(int) 
   		  			  @user.add_interest(int,'yes')
   		  		   else
 					   @user.add_interest(int,'no')
@@ -21,16 +22,25 @@ class UsersController < ApplicationController
   		    	#puts params[:interests][:id]  	
   			end	
   		end
-  			
-  	else
+  	
+  	else		
+  	    if current_user.current_state == "kids"
+  	 #    	puts params
+  		 	if (params[:kid] and params[:kid][:age]!='')
+  		 		@user.add_kid(params[:kid])
+  		 	end
+  		 end
+  		# 		@user.update(session[:user_params])
+  		# 	end
+  		# end
   		@user.update(session[:user_params])
   	end
 
   	if params[:next_step]
-  		if @user.current_state == "end"
-  		else 
+  		#if @user.current_state == "end"
+  		#else 
   			@user.next!
-  		end
+  		#end
   	end
   	if params[:prev_step]
   		@user.prev!
@@ -51,7 +61,11 @@ class UsersController < ApplicationController
 
 
   def show
-  	@user = current_user
+  	if params[:select_id] 
+  		@user = User.find_by_id(params[:select_id])
+  	else
+  		@user = current_user
+  	end
   end
 
   def user_params
@@ -64,8 +78,47 @@ class UsersController < ApplicationController
   		if int.follow_up_answer == 'yes'
   			@interest = Interest.find_by_id(int.interest_id).name
   			@users = Interest.find_by_id(int.interest_id).users # FIXME - only show willing users
+  			#@events = Event.find_each do |event| 
+  			#		     Event.find_by_id()
+			#		  end
+			ids = []
+			
+			#EventInterest.f(int.interest_id).event_id
+			
+			EventInterest.where(interest_id: int.interest_id).find_each do |ev_id| 
+				ids << ev_id
+			end
+			@events = Event.find(ids)
+  			#@events = Event.find(:all, :conditions => ["event_interests.interest_id = ?", int.interest_id])
   		end
   	end
+
+	current_user.kids.each do |kid|
+		@other_kids_str = ""
+		#@tmpkids = Kid.find_all_by_age_and_sex(kid.age,kid.sex)
+		#@tmp = @tmpkids.map{|k| k.to_json(:only => [:age, :sex]) }
+		@tmp = Kid.where(age: kid.age,sex: kid.sex).to_json(only: [:age, :sex])
+		#@tmp = Kid.find_all_by_age_and_sex(kid.age,kid.sex).to_json(only: [:age, :sex])
+		#JSON.parse(@tmp.replace(/&quot;/g,'"'))
+		#@tmp = @tmp_j.gsub("&quot","\"\'")
+		#remap = @tmpkids.map {|k, v| { Age: k, Sex: v} }  
+		
+		 #tmpkids = Kid.find_all_by_age_and_sex(kid.age,kid.sex) 
+      	#for other_kid in  tmpkids
+      	#	 if (other_kid.id != kid.id and other_kid.name != nil) 
+		#		@other_kids_str = @other_kids_str + "#{other_kid.name}," + "#{other_kid.age}," + "#{other_kid.sex},"  + "/n"
+      	#	end
+      	#end
+    end
+#		instance_variable_set("@kids_" + kid.id, Kid.find_by_age_and_sex(kid.age,kid.sex))
+  		#@kids_"#{kid.id}" = Kid.find_by_age_and_sex(kid.age,kid.sex)		
+ # 	end
+	uri = URI('https://api.meetup.com/2/open_events.xml?&sign=true&text=football&zip=02142&page=20&key='+MEETUP_CONFIG['key'])
+	req = Net::HTTP.get(uri)
+	doc = Nokogiri::XML(req)
+
+ 	@meetup_names = doc.xpath('//item/name/text()')
+    @meetup_urls = doc.xpath('//item/event_url/text()')
 
   end
 

@@ -1,0 +1,34 @@
+<!-- Include Twitter Bootstrap and jQuery: -->
+
+<!-- Include the plugin's CSS and JS: 
+ <script type="text/javascript" src="../assets/js/bootstrap-multiselect.js"></script>
+ -->
+ 
+<!-- Build your select: -->
+
+<% if @user.kids == nil %>
+	<h3> Have kids? </h3>
+	<div class="kids_container">
+		<%= form_for(Kid.all.build) do |cc| %>
+	 	   <%= cc.label "Kid's Sex" %>
+	 	   <%= cc.select(:sex, [['Male',1], ['Female',2]]) %>
+	 	   <%= cc.label "Kid's Age" %>
+	  	   <%= cc.number_field(:age)  %>
+	    <% end %>
+    </div>
+<% else %>
+	<h3> Would you like to update kids data?</h3>
+<% end %>
+ 
+<script>
+$().ready(function(){
+	$('#selections').hide();
+	$('#edit_selection').click(function() {
+		$('#selections').show();
+	});
+});
+
+</script>
+
+
+

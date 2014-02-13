@@ -8,4 +8,9 @@
   			  <%= Interest.find_by_id(int.interest_id).follow_up_question %>
   			  <%= int.follow_up_answer %> <br>
   			  <% end %>	
-	
+          <br>
+ kids:  <% @user.kids.each do |kid| %>
+           <%= kid.name %>
+          <%= kid.age %>
+	        <%= kid.sex %><br>
+        <% end %>
