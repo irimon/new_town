@@ -81,6 +81,14 @@
 					//$( str_id ).show();
 					//$(str_id).addClass('chosen');
 					$(str_id).toggle();
+
+					var pressed = $( str_id ).css("display");
+					if (pressed == "none") {
+						$(this).css('border', '0px solid red');
+					} else {
+						$(this).css('border', '2px solid red');
+					}
+					
 					return false; 
 			});
 			// $( "btn" ).each(function() {
