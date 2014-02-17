@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   		  		   else
 					   @user.add_interest(int,'no')
   		  		   end
-  		    	#puts params[:interests][:id]  	
+  		    	#puts params[:interests][:id]  j	
   			end	
   		end
   	
