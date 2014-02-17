@@ -49,14 +49,12 @@ gem 'therubyracer'
 
 gem "fuelux-rails"
 
-<<<<<<< HEAD
 gem 'json'
 
 gem 'nokogiri'
 
-=======
+
 #gem 'eventfulapi'
->>>>>>> master
 #gem 'bootstrap-multiselect-rails'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
