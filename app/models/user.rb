@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :user_interests, dependent: :destroy
   has_many :interests, :through =>  :user_interests
 
+ 
   has_many :kids, dependent: :destroy
 
   accepts_nested_attributes_for :interests, allow_destroy: true
@@ -30,6 +31,11 @@ class User < ActiveRecord::Base
       event :prev, :transitions_to => :relationship
     end
    
+    state :kids do
+      event :next, :transitions_to => :end
+      event :prev, :transitions_to => :get_interests
+    end
+
     state :kids do
       event :next, :transitions_to => :end
       event :prev, :transitions_to => :get_interests
