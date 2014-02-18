@@ -74,6 +74,7 @@ class UsersController < ApplicationController
 
 
   def suggestions
+
   	current_user.user_interests.each do |int|
   		if int.follow_up_answer == 'yes'
   			@interest = Interest.find_by_id(int.interest_id).name
@@ -93,6 +94,7 @@ class UsersController < ApplicationController
   		end
   	end
 
+  
 	current_user.kids.each do |kid|
 		@other_kids_str = ""
 		#@tmpkids = Kid.find_all_by_age_and_sex(kid.age,kid.sex)
@@ -113,14 +115,21 @@ class UsersController < ApplicationController
 #		instance_variable_set("@kids_" + kid.id, Kid.find_by_age_and_sex(kid.age,kid.sex))
   		#@kids_"#{kid.id}" = Kid.find_by_age_and_sex(kid.age,kid.sex)		
  # 	end
-	uri = URI('https://api.meetup.com/2/open_events.xml?&sign=true&text=football&zip=02142&page=20&key='+MEETUP_CONFIG['key'])
-	req = Net::HTTP.get(uri)
-	doc = Nokogiri::XML(req)
-
- 	@meetup_names = doc.xpath('//item/name/text()')
-    @meetup_urls = doc.xpath('//item/event_url/text()')
-
+ #uri = URI('https://api.meetup.com/2/open_events.xml?&sign=true&text=football&zip=02142&page=20&key='+MEETUP_CONFIG['key'])
+  
+  current_user.user_interests.each do |int|
+    @interest = Interest.find_by_id(int.interest_id)
+    uri_str = "https://api.meetup.com/2/open_events.xml?&sign=true&topic=#{@interest.name}&zip=02142&page=20&key="+MEETUP_CONFIG['key']
+    uri = URI(uri_str)
+	  req = Net::HTTP.get(uri)
+	  doc = Nokogiri::XML(req)
+    instance_variable_set("@meetup_names_#{@interest.id}", doc.xpath('//item/name/text()') )
+  	instance_variable_set("@meetup_urls_#{@interest.id}", doc.xpath('//item/event_url/text()') )
+    #@meetup_names_ = doc.xpath('//item/name/text()')
+    #@meetup_urls = doc.xpath('//item/event_url/text()')
   end
+  #debugger
+ end
 
 
 end

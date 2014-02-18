@@ -53,6 +53,7 @@ gem 'json'
 
 gem 'nokogiri'
 
+gem 'debugger'
 
 #gem 'eventfulapi'
 #gem 'bootstrap-multiselect-rails'

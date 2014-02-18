@@ -51,9 +51,16 @@
 			<div class="Event_list" id=<%= "interest_#{@interest.id}" %> >
 				<h3><%= @interest.name %></h3><br>
 				<h4>Meetups</h3>    <!-- FIXME - insert dynamic meetup search (in path) -->
-				<% (0...@meetup_names.length).each do |i|  %>
-				  <a href=<%= @meetup_urls[i] %> > <%= @meetup_names[i] %> </a>
-				  <br>
+				<% @meetup_names = instance_variable_get("@meetup_names_#{@interest.id}") %>
+				<% @meetup_urls = instance_variable_get("@meetup_urls_#{@interest.id}") %>
+				<% if @meetup_names.length == 0 %>
+					<h4>No meetups found for <%= @interest.name %></h4>
+					debug: names = <%= @meetup_names %>  urls = <%= @meetup_urls %> id = <%= @interest.id %>
+				<% else %>
+					<% (0...@meetup_names.length).each do |i|  %>
+					  <a href=<%= @meetup_urls[i] %> > <%= @meetup_names[i] %> </a>
+					  <br>
+					<% end %>
 				<% end %>
 				<br>
 				
